@@ -12,8 +12,10 @@ as well.
 - aryadee.dev
   - tech blog
   - dynamic photo gallery with user accounts
+  - sveltekit on deno
 - nathaliektherapy.com
   - static site
+  - sveltekit on deno
 
 # servers
 
@@ -31,15 +33,36 @@ as well.
   - `/mnt/amber/` LVM on ext4 composed of cold storage HDDs
   - served from `server` account
 
+## fs
+
+on pi
+```
+# account `server`
+
+~/aryadee.dev
+~/nathaliektherapy.com
+```
+
+on mu
+```
+# account `server`
+
+~/logs/
+  /ingest/
+  /backup/
+  /heifer/
+```
+
 # tools and services
 
 - `heifer`
   - Image server on `mu` that serves thumbnails and resized images from the HEIF and JPEG fullsize originals
 - `ingest`
   - Ingests photos and videos from SD cards to `mu` NAS
-- `amber_nightly.sh`
+- `backup.ts`
   - Backs up data from `mu` NAS hot storage to cold storage drives
-
+- `checkup`
+  - Checks drive health, disk usage, and other server stats
 These should all write to log files.
 
 ## External tools
