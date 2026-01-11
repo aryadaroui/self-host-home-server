@@ -1,0 +1,205 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://aryadee.dev/api.schema.json",
+	"title": "Heifer API Schema",
+	"description": "JSON schema for the Heifer image server API endpoints",
+	"definitions": {
+		"client_token": {
+			"type": "string",
+			"description": "Client authentication token in format: username-uuid",
+			"pattern": "^[a-zA-Z0-9_]+-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+		},
+		"album_name": {
+			"type": "string",
+			"description": "Name of a photo album",
+			"minLength": 1
+		},
+		"image_name": {
+			"type": "string",
+			"description": "Name of an image file within an album",
+			"minLength": 1
+		},
+		"image_size": {
+			"type": "string",
+			"enum": ["tiny", "small", "medium", "fullsize"],
+			"description": "Requested image size variant"
+		},
+		"log_type": {
+			"type": "string",
+			"enum": ["ingest", "backup", "checkup", "deploy"],
+			"description": "Type of server log to retrieve"
+		}
+	},
+	"endpoints": {
+		"login": {
+			"method": "POST",
+			"path": "/login",
+			"description": "Authenticate user and receive client token",
+			"request": {
+				"type": "object",
+				"required": ["username", "password"],
+				"properties": {
+					"username": {
+						"type": "string",
+						"minLength": 1
+					},
+					"password": {
+						"type": "string",
+						"minLength": 1
+					}
+				}
+			},
+			"response": {
+				"type": "object",
+				"required": ["client_token"],
+				"properties": {
+					"client_token": {
+						"$ref": "#/definitions/client_token"
+					}
+				}
+			}
+		},
+		"logout": {
+			"method": "POST",
+			"path": "/logout",
+			"description": "Invalidate client token and end session",
+			"request": {
+				"type": "object",
+				"required": ["client_token"],
+				"properties": {
+					"client_token": {
+						"$ref": "#/definitions/client_token"
+					}
+				}
+			},
+			"response": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					}
+				}
+			}
+		},
+		"albums": {
+			"method": "GET",
+			"path": "/albums",
+			"description": "Get list of all available albums",
+			"request": {
+				"type": "object",
+				"required": ["client_token"],
+				"properties": {
+					"client_token": {
+						"$ref": "#/definitions/client_token"
+					}
+				}
+			},
+			"response": {
+				"type": "object",
+				"required": ["albums"],
+				"properties": {
+					"albums": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/album_name"
+						}
+					}
+				}
+			}
+		},
+		"album_image_names": {
+			"method": "GET",
+			"path": "/album/image_names",
+			"description": "Get list of image names within a specific album",
+			"request": {
+				"type": "object",
+				"required": ["client_token", "album_name"],
+				"properties": {
+					"client_token": {
+						"$ref": "#/definitions/client_token"
+					},
+					"album_name": {
+						"$ref": "#/definitions/album_name"
+					}
+				}
+			},
+			"response": {
+				"type": "object",
+				"required": ["image_names"],
+				"properties": {
+					"image_names": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/image_name"
+						}
+					}
+				}
+			}
+		},
+		"image": {
+			"method": "GET",
+			"path": "/image",
+			"description": "Retrieve image bytes in specified size",
+			"request": {
+				"type": "object",
+				"required": ["client_token", "album_name", "image_name", "size"],
+				"properties": {
+					"client_token": {
+						"$ref": "#/definitions/client_token"
+					},
+					"album_name": {
+						"$ref": "#/definitions/album_name"
+					},
+					"image_name": {
+						"$ref": "#/definitions/image_name"
+					},
+					"size": {
+						"$ref": "#/definitions/image_size"
+					}
+				}
+			},
+			"response": {
+				"description": "Binary image data",
+				"contentType": "image/jpeg"
+			}
+		},
+		"log": {
+			"method": "GET",
+			"path": "/log",
+			"description": "Retrieve server log text for specified log type",
+			"request": {
+				"type": "object",
+				"required": ["client_token", "log_type"],
+				"properties": {
+					"client_token": {
+						"$ref": "#/definitions/client_token"
+					},
+					"log_type": {
+						"$ref": "#/definitions/log_type"
+					}
+				}
+			},
+			"response": {
+				"type": "object",
+				"required": ["log_text"],
+				"properties": {
+					"log_text": {
+						"type": "string",
+						"description": "Plain text log content"
+					}
+				}
+			}
+		}
+	},
+	"authentication": {
+		"description": "Token-based authentication with IP validation",
+		"token_format": "username-uuid",
+		"token_expiration_days": 30,
+		"validation_requirements": [
+			"Valid token format",
+			"Token not expired",
+			"IP address matches token issuance",
+			"Username matches"
+		]
+	}
+}
