@@ -1,0 +1,31 @@
+{
+  auto_https off
+}
+
+:80 {
+  @photos host photos.aryadee.dev
+  handle @photos {
+    reverse_proxy http://host.docker.internal:30041 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto https
+    }
+  }
+
+  @blog host aryadee.dev
+  handle @blog {
+    reverse_proxy http://web-sites:3000 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto https
+    }
+  }
+
+  @therapy host nathaliektherapy.com
+  handle @therapy {
+    reverse_proxy http://web-sites:3001 {
+      header_up Host {host}
+      header_up X-Forwarded-Proto https
+    }
+  }
+
+  respond "caddy up" 200
+}

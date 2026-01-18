@@ -1,0 +1,28 @@
+networks:
+  web-gateway:
+    driver: bridge
+services:
+  caddy:
+    container_name: web-gateway-caddy
+    image: caddy:2
+    networks:
+      - web-gateway
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /mnt/marble/appdata/web-gateway/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /mnt/marble/appdata/web-gateway/caddy_data:/data
+      - /mnt/marble/appdata/web-gateway/caddy_config:/config
+  cloudflared:
+    # Must replace <TOKEN> with the actual Cloudflare Tunnel token
+    # NOTE: this is a secret value. Do not expose it.
+    command: >-
+      tunnel --no-autoupdate run --token <TOKEN> 
+    container_name: web-gateway-cloudflared
+    depends_on:
+      - caddy
+    image: cloudflare/cloudflared:latest
+    networks:
+      - web-gateway
+    restart: unless-stopped

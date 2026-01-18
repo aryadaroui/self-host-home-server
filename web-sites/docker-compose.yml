@@ -1,0 +1,38 @@
+services:
+  aryadee-dev:
+    image: denoland/deno:alpine-2.6.5
+    working_dir: /srv
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./aryadee.dev:/srv
+    command: >
+      sh -c "deno install &&
+             deno task build &&
+             deno task preview --host 0.0.0.0 --port 3000"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  nathaliektherapy:
+    image: denoland/deno:alpine-2.6.5
+    working_dir: /srv
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./nathaliektherapy.com:/srv
+    command: >
+      sh -c "deno install &&
+             deno task build &&
+             deno task preview --host 0.0.0.0 --port 3001"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
