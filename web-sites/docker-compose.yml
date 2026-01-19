@@ -1,56 +1,60 @@
 services:
+  pull-deploy:
+    image: denoland/deno:alpine-2.6.5
+    working_dir: /srv
+    restart: "no"
+    volumes:
+      - /mnt/marble/appdata/web-sites/:/srv
+    command: >
+      sh -c "apk add --no-cache git &&
+             if [ ! -d /srv/.git ]; then
+               git clone --depth 1 https://github.com/aryadaroui/self-host-home-server /srv;
+             else
+               git -C /srv pull --ff-only;
+             fi"
+
   aryadee-dev:
     image: denoland/deno:alpine-2.6.5
     working_dir: /srv
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3000:8000"
     volumes:
-      - aryadee-dev-repo:/srv
+      - /mnt/marble/appdata/web-sites/:/srv
     command: >
-      sh -c "apk add --no-cache git &&
-             if [ ! -d /srv/.git ]; then
-               git clone --depth 1 https://github.com/aryadaroui/self-host-home-server /srv;
-             else
-               git -C /srv pull --ff-only;
-             fi &&
-             cd /srv/web-sites/aryadee.dev &&
+      sh -c "cd /srv/web-sites/aryadee.dev &&
              deno install &&
              deno task build &&
-             deno task preview --host 0.0.0.0 --port 3000"
+             deno run --allow-env --allow-net --allow-read .deno-deploy/server.ts"
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
-      interval: 30s
+      test: ["CMD-SHELL", "deno eval 'await fetch(\"http://localhost:8000\")'"]
+      interval: 60s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 30s
+    depends_on:
+      pull-deploy:
+        condition: service_completed_successfully
 
-  nathaliektherapy:
+  nathaliektherapy-com:
     image: denoland/deno:alpine-2.6.5
     working_dir: /srv
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "3001:8000"
     volumes:
-      - nathaliektherapy-repo:/srv
+      - /mnt/marble/appdata/web-sites/:/srv
     command: >
-      sh -c "apk add --no-cache git &&
-             if [ ! -d /srv/.git ]; then
-               git clone --depth 1 https://github.com/aryadaroui/self-host-home-server /srv;
-             else
-               git -C /srv pull --ff-only;
-             fi &&
-             cd /srv/web-sites/nathaliektherapy.com &&
+      sh -c "cd /srv/web-sites/nathaliektherapy.com &&
              deno install &&
              deno task build &&
-             deno task preview --host 0.0.0.0 --port 3001"
+             deno run --allow-env --allow-net --allow-read .deno-deploy/server.ts"
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001"]
-      interval: 30s
+      test: ["CMD-SHELL", "deno eval 'await fetch(\"http://localhost:8000\")'"]
+      interval: 60s
       timeout: 10s
       retries: 3
-      start_period: 60s
-
-volumes:
-  aryadee-dev-repo:
-  nathaliektherapy-repo:
+      start_period: 30s
+    depends_on:
+      pull-deploy:
+        condition: service_completed_successfully

@@ -11,17 +11,17 @@
     }
   }
 
-  @blog host aryadee.dev
+  @blog host aryadee.dev www.aryadee.dev
   handle @blog {
-    reverse_proxy http://web-sites:3000 {
+    reverse_proxy http://host.docker.internal:3000 {
       header_up Host {host}
       header_up X-Forwarded-Proto https
     }
   }
 
-  @therapy host nathaliektherapy.com
+  @therapy host nathaliektherapy.com www.nathaliektherapy.com
   handle @therapy {
-    reverse_proxy http://web-sites:3001 {
+    reverse_proxy http://host.docker.internal:3001 {
       header_up Host {host}
       header_up X-Forwarded-Proto https
     }
