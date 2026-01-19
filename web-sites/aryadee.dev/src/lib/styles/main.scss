@@ -1,0 +1,101 @@
+@import './fonts.css';
+
+// general color palette. visible in /palette.png
+$gray-harder: hsl(210, 12%, 10%);
+$gray-hard: hsl(220, 11%, 12%); // darker
+$navy-hard: hsl(215, 20%, 18%); // dark
+$tan-hard: #efc79c; // lighter
+$pink-hard: #f7679c; // light
+$cyan-hard: #1ed3d3; // light
+$blue-hard: #1e91d3; // light
+
+$gray-mid: hsl(225, 8%, 18%); // back
+$navy-mid: hsl(210, 24%, 33%); // paper
+$tan-mid: #e8cdae; // front
+$pink-mid: #ff99be; // accent
+$cyan-mid: #7aecec; // utility
+$blue-mid: #7ac6ec; // utility
+
+$gray-soft: hsl(220, 7%, 21%);
+$navy-soft: hsl(220, 17%, 42%);
+$tan-soft: #ffeed7;
+$pink-soft: #fac0d0;
+$cyan-soft: #bcf8f3;
+$blue-soft: #a5e0f5;
+
+// document colors
+
+$ink-color: $tan-soft;
+$accent-color: $pink-mid;
+$link-color: $cyan-mid;
+$paper-color: $gray-hard;
+$background-color: $gray-mid;
+$background-color-light: hsl(20, 8.5%, 15%);
+$void-color: hsl(220, 13%, 12%);
+
+$border-translucent: rgba($tan-mid, 0.3);
+$border-link-translucent: rgba($blue-mid, 0.4);
+$border-link-translucent-hover: rgba($tan-mid, 0.8);
+$background-translucent: hsl(225, 10%, 12%);
+
+$link-background: #177587;
+
+// $sans: 'Swiss 721', sans-serif;
+$sans: 'Open Sans', sans-serif;
+$mono: 'Hack', monospace;
+
+:root {
+	background-color: $void-color;
+	scrollbar-color: dark;
+	color-scheme: dark;
+}
+
+html {
+	scroll-behavior: smooth;
+	// font-weight: 400;
+	height: 100%;
+    margin: 0;
+}
+
+p {
+    font-weight: 400;
+}
+
+li {
+    font-weight: 400;
+}
+
+
+
+:global(body) {
+	// background-color: $background-color;
+	color: $ink-color;
+	font-family: $sans;
+	// font-family: Hack, monospace;
+	font-weight: 400;
+	font-size: calc(0.8rem + 0.6vw);
+	margin: 0rem;
+
+	height: 100%;
+    margin: 0;
+
+	a {
+		color: $link-color;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+::selection {
+	background: rgba($blue-mid, $alpha: 0.3);
+}
+
+.accent {
+	color: $accent-color;
+}
+
+.dead {
+	color: $gray-soft;
+}

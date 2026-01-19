@@ -6,9 +6,16 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./aryadee.dev:/srv
+      - aryadee-dev-repo:/srv
     command: >
-      sh -c "deno install &&
+      sh -c "apk add --no-cache git &&
+             if [ ! -d /srv/.git ]; then
+               git clone --depth 1 https://github.com/aryadaroui/self-host-home-server /srv;
+             else
+               git -C /srv pull --ff-only;
+             fi &&
+             cd /srv/web-sites/aryadee.dev &&
+             deno install &&
              deno task build &&
              deno task preview --host 0.0.0.0 --port 3000"
     healthcheck:
@@ -25,9 +32,16 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - ./nathaliektherapy.com:/srv
+      - nathaliektherapy-repo:/srv
     command: >
-      sh -c "deno install &&
+      sh -c "apk add --no-cache git &&
+             if [ ! -d /srv/.git ]; then
+               git clone --depth 1 https://github.com/aryadaroui/self-host-home-server /srv;
+             else
+               git -C /srv pull --ff-only;
+             fi &&
+             cd /srv/web-sites/nathaliektherapy.com &&
+             deno install &&
              deno task build &&
              deno task preview --host 0.0.0.0 --port 3001"
     healthcheck:
@@ -36,3 +50,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
+volumes:
+  aryadee-dev-repo:
+  nathaliektherapy-repo:

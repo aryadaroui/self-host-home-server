@@ -34,4 +34,3 @@ people in my life.
   - Pool "amber"
     - Cold storage. Backed up nightly from "marble"
     - Single VDEV of mirrored HDDs
-  - `/mnt/amber/` LVM on ext4 composed of cold storage HDDs
