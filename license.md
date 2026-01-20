@@ -1,36 +1,18 @@
 # Licensing
 
-This repository uses two different licenses.
+This repository uses multiple licenses, as it contains both source code and
+websites for multiple people.
 
 ## 1. Website content (posts, writing, images, and other media)
 
-Unless otherwise noted, the content of the websites and associated media in this repository are licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
-
-```
-You are free to:
-- Share: copy and redistribute the material in any medium or format
-- Adapt: remix, transform, and build upon the material
-
-The licensor cannot revoke these freedoms as long as you follow the license terms.
-
-Under the following terms:
-- Attribution: You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- NonCommercial: You may not use the material for commercial purposes.
-- No additional restrictions: You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
-
-Notices:
-- You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
-- No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
-
-Details:
-- https://creativecommons.org/licenses/by-nc/4.0/
-```
-
-If you have questions or would like to request permission for uses outside the scope of this license, please message me.
+Each website in the `web-sites/` directory has its own license for the content
+it contains; refer to the `license.md` file in each website's directory for
+specific details.
 
 ## 2. Source code and configuration
 
-All source code and configuration in this repository (excluding the website content described above) are licensed under the MIT License:
+All source code and configuration in this repository (excluding the website
+content described above) are licensed under the MIT License:
 
 ```
 MIT License
@@ -58,4 +40,6 @@ SOFTWARE.
 
 ### Third-party material
 
-Any third-party trademarks, logos, fonts, libraries, screenshots, or other assets are subject to their respective licenses and are not granted additional rights by this document.
+Any third-party trademarks, logos, fonts, libraries, screenshots, or other
+assets are subject to their respective licenses and are not granted additional
+rights by this document.
