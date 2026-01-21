@@ -112,11 +112,16 @@
 
 	img {
 		width: 100%;
+		display: block;
 		aspect-ratio: 3 / 4;
 		object-fit: cover;
 		border-radius: 20px;
 		box-shadow: 0 18px 40px rgba(31, 33, 36, 0.18);
 		animation: rise 900ms ease 120ms both;
+	}
+
+	.identity {
+		min-width: 0;
 	}
 
 	h1 {
@@ -132,6 +137,7 @@
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		color: var(--muted);
+		overflow-wrap: anywhere;
 	}
 
 	.credentials-secondary {
@@ -139,6 +145,7 @@
 		font-size: 0.88rem;
 		letter-spacing: 0.02em;
 		color: rgba(91, 107, 115, 0.85);
+		overflow-wrap: anywhere;
 	}
 
 	.details {
@@ -147,6 +154,7 @@
 		gap: 6px;
 		font-size: 0.95rem;
 		color: var(--muted);
+		min-width: 0;
 	}
 
 	.detail {
@@ -168,6 +176,8 @@
 
 	dd {
 		margin: 0;
+		min-width: 0;
+		overflow-wrap: anywhere;
 	}
 
 	.details a {
@@ -178,6 +188,7 @@
 		transition:
 			color 200ms ease,
 			border-color 200ms ease;
+		overflow-wrap: anywhere;
 	}
 
 	.details a:hover {
@@ -238,8 +249,13 @@
 		}
 
 		img {
-			max-width: 280px;
-			justify-self: center;
+			width: min(100%, 320px);
+			margin: 0 auto;
+		}
+
+		.detail {
+			grid-template-columns: 1fr;
+			gap: 2px;
 		}
 
 		.credentials {
